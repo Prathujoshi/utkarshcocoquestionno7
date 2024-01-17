@@ -1,0 +1,56 @@
+import java.util.*;
+
+public class ShortestRoutes
+{
+  public static List < List < Integer >> findShortestRoutes (List < Integer >
+							     blockedCells)
+  {
+    int start = 0, target = 24;
+      Queue < List < Integer >> queue = new LinkedList <> ();
+      Set < Integer > visited = new HashSet <> ();
+      List < List < Integer >> shortestRoutes = new ArrayList <> ();
+
+      queue.add (new ArrayList <> (List.of (start)));
+      visited.add (start);
+    while (!queue.isEmpty ())
+      {
+	List < Integer > path = queue.poll ();
+	int current = path.get (path.size () - 1);
+
+	if (current == target)
+	  {
+	    shortestRoutes.add (new ArrayList <> (path));
+	    continue;
+	  }
+	for (int move:new int[]
+	     {
+	     -1, 1, -5, 5})
+	  {
+	    int newPosition = current + move;
+
+	    if (isValidMove (current, move, blockedCells)
+		&& !visited.contains (newPosition))
+	      {
+		visited.add (newPosition);
+		List < Integer > newPath = new ArrayList <> (path);
+		newPath.add (newPosition);
+		queue.add (newPath);
+	      }
+	  }
+      }
+    return shortestRoutes;
+  }
+
+  
+  public static void main (String[]args)
+  {
+
+    List < Integer > blockedCells = List.of (7, 9, 10, 14, 17, 18, 19);
+    List < List < Integer >> result = findShortestRoutes (blockedCells);
+   
+  for (List < Integer > route:result)
+      {
+	System.out.println (route);
+      }
+  }
+}
